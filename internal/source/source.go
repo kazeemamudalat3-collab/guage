@@ -18,6 +18,7 @@ func CheckPassphrase(info model.NetworkInfo, want string) error {
 	if want == "" {
 		return fmt.Errorf("%w: no expected network passphrase", ErrOptions)
 	}
+	// A whitespace-only expectation is compared byte for byte, not treated as absent.
 	if info.Passphrase == want {
 		return nil
 	}
