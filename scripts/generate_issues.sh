@@ -161,6 +161,7 @@ backlog() {
     '7.65	type: bug	area: policy	bug(policy): endpoint validation accepts a path and an out-of-range port' \
     '7.66	type: feature	area: policy	feature(policy): keep the TOML parser line and column in the syntax error' \
     '7.67	type: bug	area: policy	bug(policy): empty policy with no accounts accepted at load time' \
+    '7.68	type: test	area: source	test(source): keep exponential backoff under the five second ceiling' \
     'G1	type: test	area: rules	gate: every P0 requirement has passing tests' \
     'G2	type: test	area: rules	gate: every scenario has a fixture and expected findings' \
     'G3	type: test	area: cli	gate: fail-closed paths all exit non-zero' \

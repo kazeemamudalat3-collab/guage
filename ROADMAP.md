@@ -1,6 +1,6 @@
 # ROADMAP: Gauge
 
-Last updated: 2026-11-22T01:30Z (task 1.25: PI-1 issue contract synchronized with origin/main)
+Last updated: 2026-11-23T09:33Z (task 7.68: pin exponential backoff under the five second ceiling)
 Roadmap version: 3
 
 This file is the single source of truth for remaining work. It is read before every task and updated after every change.
@@ -40,7 +40,7 @@ The repository is 100% ready when every task in Phases 0 to 6 is done and every 
 | 4 | Dogfood and release v0.1.0 | 4 | 9 | 44% |
 | 5 | v0.2 features | 10 | 11 | 90% |
 | 6 | Release v0.2.0 and community | 1 | 5 | 20% |
-| 7 (backlog) | Backlog | 60 | 64 | 93% |
+| 7 (backlog) | Backlog | 61 | 65 | 93% |
 | **Phases 0 to 6** | **Readiness total** | **70** | **80** | **87%** |
 | Gates | G1 to G10 | 8 | 10 | 80% |
 <!-- PROGRESS:END -->
@@ -290,6 +290,7 @@ Constraint on the two remaining experimental tasks: Gauge never builds or submit
 - [x] **7.65** bug(policy): endpoint validation accepts a path and an out-of-range port. S. Done when: `validEndpoint` requires an empty path or `/`, refuses trailing colon, and checks port 1 to 65535, tested in `internal/policy/endpoint_shape_test.go`. (done 2026-11-21; issue #139)
 - [x] **7.66** feature(policy): keep the TOML parser line and column in the syntax error. S. Done when: `Load` preserves line and column in `ErrSyntax` detail and quotes `LastKey`, tested in `internal/policy/syntax_position_test.go`. (done 2026-11-21; issue #140)
 - [x] **7.67** bug(policy): empty policy with no accounts accepted at load time. S. Done when: `Config.validate` returns `ErrNoAccounts` with detail `account` when no `[[account]]` table is declared, tested in `internal/policy/empty_policy_test.go`. (done 2026-11-21; issue #141)
+- [x] **7.68** test(source): keep exponential backoff under the five second ceiling. S. Done when: `internal/source/backoff_test.go` tables attempts 1 to 12 over bases of 1 ms, 200 ms and 4 s, asserts every value is at most 5 s and never decreases, and attempt 1 returns the base unchanged including a zero base. (done 2026-11-23; issue #172)
 ## 6. Dependency map (critical path)
 
 `0.2, 0.4 -> 1.1 -> 1.4 -> 2.1 -> 2.2, 2.3, 2.5 -> 2.7 -> 2.8 -> 2.9 -> 3.1 to 3.5 -> 3.7 -> 4.1 -> 4.8`
@@ -339,6 +340,7 @@ Newest first. One row per merged change.
 
 | Date (UTC) | Change | Tasks |
 |---|---|---|
+| 2026-11-23 | Task 7.68 (close #172): pin `backoffFor` across attempts 1 to 12 for bases of 1 ms, 200 ms and 4 s in `internal/source/backoff_test.go`, asserting the exact sequences, the 5 s ceiling, monotonicity and the unchanged base on attempt 1. | 7.68 |
 | 2026-11-05 | PI-1, the organization's issue contract, becomes the shape of every issue this repository generates. `scripts/generate_issues.sh` builds the marker line, a one-sentence brief and nine fixed sections: seven derived from the roadmap row, the area label and `AGENTS.md` sections 4 and 5, and two curated per task in a prose table the script now refuses to skip, so a roadmap row with no prose gets no issue. Gates ask for an observation and say plainly that a diff does not close one; owner acts say a contributor cannot take them; a wave tier rides in the marker only when the task's dependencies are ticked, and no issue gains a `Stellar Wave` label, because a GitHub tag fixes an issue at Trivial whatever the work turns out to be. `.github/ISSUE_TEMPLATE/task.yml` prefills the same nine headings, `CONTRIBUTING.md` points at the contract, and `scripts/test_issue_shape.sh` checks the shape inside `roadmap-check / gate`; it caught two generator faults before the first commit landed. Published the same morning, from this branch while its pull request was still open: `scripts/generate_issues.sh --update --apply` printed `0 created, 32 updated, 42 already present and unchanged`, and a read-back over the API of the 36 open issues finds 32 with the marker on line 1 and the nine headings in order, 4627 to 5359 characters apiece and each one byte-identical to what `--body-for` prints for its id, 9 carrying a wave tier and none carrying a `Stellar Wave` label. The four that stayed in the pre-PI-1 form are #42 (3.6), #43 (3.7), #66 (G1) and #67 (G2); their tasks are ticked, so the generator no longer has rows for them and closing them is the owner's bookkeeping. | 1.25 |
 | 2026-11-21 | Task 5.1 (close #267): multi-endpoint comparison. `check --endpoint` repeats up to five times and `audit` reads every `endpoints` entry; every account is read from each endpoint and compared with the first by `source.Compare`, and a difference is one HIGH, non-acceptable `src-disagreement` per disagreeing endpoint, naming fields only. | 5.1 |
 | 2026-11-21 | Tasks 7.65 to 7.67 (close #259, close #139, close #140, close #141): enforce load-time config boundaries in `internal/policy` (reject path and out-of-range port in endpoint validation, keep TOML parser line and column in syntax error, and reject empty policy with no accounts). | 7.65, 7.66, 7.67 |
