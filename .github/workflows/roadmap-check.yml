@@ -30,5 +30,7 @@ jobs:
           python3 scripts/sync_readme.py --check-base "origin/${GITHUB_BASE_REF}"
       - name: issue backlog covers every open task
         run: scripts/generate_issues.sh --check
+      - name: every generated issue body matches PI-1
+        run: scripts/test_issue_shape.sh
       - name: gate script self-test
         run: scripts/test_roadmap_gate.sh

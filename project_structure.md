@@ -141,6 +141,7 @@ guage/
     generate_issues.sh                    # roadmap to GitHub issues; --check, --apply, --update   (1.13, 1.14)
     roadmap_progress.sh                   # computes the progress table; --check fails when stale   (1.9)
     sync_readme.py                        # dynamic metrics and live badge sync; --check-base in CI
+    test_issue_shape.sh                   # every generated body carries the PI-1 shape            (1.25)
     test_roadmap_gate.sh                  # eight cases for both scripts, on throwaway git repos    (1.9)
 
   .github/
@@ -148,11 +149,12 @@ guage/
     dependabot.yml                        # gomod and actions, grouped weekly                       (1.6)
     pull_request_template.md              # includes the ROADMAP checkbox                           (1.8)
     ISSUE_TEMPLATE/
-      config.yml                          # routes security reports away from issues
+      config.yml                          # routes security reports away from issues, links PI-1
       bug.yml                             # bug form: command, exit code, policy excerpt, version
+      task.yml                            # task form: the nine PI-1 sections prefilled            (1.25)
     workflows/
       ci.yml                              # ci / go (gofmt, vet, build, test -race, staticcheck) and ci / vuln (1.5)
-      roadmap-check.yml                   # roadmap-check / gate: touched, table, backlog rows, self-test (1.9, 1.14)
+      roadmap-check.yml                   # roadmap-check / gate: touched, table, backlog rows, body shape, self-tests (1.9, 1.14, 1.25)
       scorecard.yml                       # scorecard / analysis: OSSF Scorecard, SARIF and badge  (1.7)
       pages.yml                           # pages / deploy: publishes site/ to GitHub Pages        (5.9)
 ```

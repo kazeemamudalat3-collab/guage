@@ -63,8 +63,9 @@ go test ./... -race -count=1                                                    
 govulncheck ./...                # v1.9.0                                      [ci / vuln]
 scripts/check_roadmap_touched.sh origin/main                                  [roadmap-check / gate]
 scripts/roadmap_progress.sh --check ROADMAP.md                                [roadmap-check / gate]
-scripts/test_roadmap_gate.sh                                                    [roadmap-check / gate]
+scripts/test_roadmap_gate.sh                                                  [roadmap-check / gate]
 scripts/generate_issues.sh --check          # backlog rows cover every open task      [roadmap-check / gate]
+scripts/test_issue_shape.sh                 # generated issue bodies match PI-1       [roadmap-check / gate]
 python3 scripts/sync_readme.py --check-base origin/main   # metrics block is script-owned [roadmap-check / gate]
 ```
 
@@ -97,6 +98,7 @@ go test ./internal/sanitize -run '^$' -fuzz=FuzzFenced -fuzztime=10s
 - **Config field:** `internal/policy/config.go` plus strict-decode tests and `gauge.example.toml`.
 - **Accepted risk in a policy file:** only the owner adds `[[accept]]` entries, always with a reason.
 - **New requirement or decision:** update `PRD.md` and the ADR table, and add a row to the `ROADMAP.md` decision log.
+- **New roadmap task:** add the task row and, in the same pull request, a `backlog()` row and an `issue_prose` row in `scripts/generate_issues.sh`. `scripts/generate_issues.sh --check` fails without them, and `scripts/test_issue_shape.sh` checks that whatever body the generator produces has the nine PI-1 sections.
 
 ## 8. Testing expectations
 
